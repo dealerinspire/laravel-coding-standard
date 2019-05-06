@@ -1,5 +1,5 @@
 {
-  "name": "dealerinspire/coding-standard",
+  "name": "dealerinspire/laravel-coding-standard",
   "description": "DealerInspire Coding Standard for Laravel specific requirements.",
   "license": "MIT",
   "type": "phpcodesniffer-standard",
