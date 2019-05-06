@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<phpunit
+        bootstrap="tests/bootstrap.php"
+        colors="true"
+        backupGlobals="false"
+        backupStaticAttributes="false"
+        beStrictAboutChangesToGlobalState="true"
+        beStrictAboutOutputDuringTests="true"
+        beStrictAboutTodoAnnotatedTests="true"
+        executionOrder="defects"
+>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">DealerInspireLaravelCodingStandard</directory>
+        </whitelist>
+    </filter>
+</phpunit>
