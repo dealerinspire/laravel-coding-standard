@@ -99,6 +99,13 @@ class DeferredProvidersSniffTest extends TestCase
                         'Found bound class not in provides "SomeOtherServiceContract::class"' => null,
                     ],
                 ],
+            'Test deferrable without define in provides array fails' =>
+                [
+                    'DeferrableWithoutProvidesServiceProvider.php',
+                    [
+                        'Found bound class not in provides "SomeOtherServiceContract::class"' => null,
+                    ],
+                ],
             'Test deferred with all bind methods correctly fails' =>
                 [
                     'BindingMethodsServiceProvider.php',

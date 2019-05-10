@@ -62,6 +62,11 @@ class DeferredProvidersSniff implements Sniff
     protected $checkingForDeferredValue = false;
 
     /**
+     * @var bool Indicates if we've encountered the DeferrableProvider interface
+     */
+    protected $checkingForDeferrableProvider = false;
+
+    /**
      * Returns the token types that this sniff is interested in.
      *
      * @return int[]
@@ -116,21 +121,33 @@ class DeferredProvidersSniff implements Sniff
      */
     protected function isDeferred(int $index, array $tokens): ?bool
     {
-        if ($tokens[$index]['code'] === T_VARIABLE && $tokens[$index]['content'] === '$defer') {
-            $this->checkingForDeferredValue = true;
-        }
-
-        if ($this->checkingForDeferredValue === false) {
+        if ($tokens[$index]['code'] === T_IMPLEMENTS) {
+            $this->checkingForDeferrableProvider = true;
             return null;
         }
 
-        // The first T_TRUE or T_FALSE after '$defer' will be the value
-        if ($tokens[$index]['code'] === T_TRUE) {
-            $this->checkingForDeferredValue = false;
-            return true;
-        } else if ($tokens[$index]['code'] === T_FALSE) {
-            $this->checkingForDeferredValue = false;
-            return false;
+        if ($tokens[$index]['code'] === T_VARIABLE && $tokens[$index]['content'] === '$defer') {
+            $this->checkingForDeferredValue = true;
+            return null;
+        }
+
+        if ($this->checkingForDeferrableProvider) {
+            // The first string after 'implements' will be the value
+            if ($tokens[$index]['code'] === T_STRING) {
+                $this->checkingForDeferrableProvider = false;
+                return $tokens[$index]['content'] === 'DeferrableProvider';
+            }
+        }
+
+        if ($this->checkingForDeferredValue) {
+            // The first T_TRUE or T_FALSE after '$defer' will be the value
+            if ($tokens[$index]['code'] === T_TRUE) {
+                $this->checkingForDeferredValue = false;
+                return true;
+            } else if ($tokens[$index]['code'] === T_FALSE) {
+                $this->checkingForDeferredValue = false;
+                return false;
+            }
         }
 
         return null;
