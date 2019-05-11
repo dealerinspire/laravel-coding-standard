@@ -132,10 +132,13 @@ class DeferredProvidersSniff implements Sniff
         }
 
         if ($this->checkingForDeferrableProvider) {
-            // The first string after 'implements' will be the value
-            if ($tokens[$index]['code'] === T_STRING) {
+            if ($tokens[$index]['code'] === T_OPEN_CURLY_BRACKET) {
                 $this->checkingForDeferrableProvider = false;
-                return $tokens[$index]['content'] === 'DeferrableProvider';
+                return null;
+            }
+            if ($tokens[$index]['code'] === T_STRING && $tokens[$index]['content'] === 'DeferrableProvider') {
+                $this->checkingForDeferrableProvider = false;
+                return true;
             }
         }
 
