@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Files\File;
  * This class assumes some things about the code it's sniffing:
  * - The provides method simply returns an array of classes that are provided (no method calls or other overly clever shenanigans)
  * - The register method and provides method refer to the class in the same way i.e. both either use string literals or ::class magic constants
- * - The $defer property is set within the Service Provider (it won't check in parent classes; it'll assume $defer is the default of false)
+ * - The $defer property is set to true or the DeferrableProvider interface is implemented. It won't check in parent classes.
  *
  * @package DealerInspireLaravel\Sniffs\Providers
  */
