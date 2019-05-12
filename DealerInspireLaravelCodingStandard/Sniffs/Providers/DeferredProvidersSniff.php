@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Files\File;
  * This class assumes some things about the code it's sniffing:
  * - The provides method simply returns an array of classes that are provided (no method calls or other overly clever shenanigans)
  * - The register method and provides method refer to the class in the same way i.e. both either use string literals or ::class magic constants
- * - The $defer property is set within the Service Provider (it won't check in parent classes; it'll assume $defer is the default of false)
+ * - The $defer property is set to true or the DeferrableProvider interface is implemented. It won't check in parent classes.
  *
  * @package DealerInspireLaravel\Sniffs\Providers
  */
@@ -60,6 +60,11 @@ class DeferredProvidersSniff implements Sniff
      * @var bool Indicates if we've encountered the $defer variable
      */
     protected $checkingForDeferredValue = false;
+
+    /**
+     * @var bool Indicates if we've encountered the implements keyword
+     */
+    protected $checkingForDeferrableProvider = false;
 
     /**
      * Returns the token types that this sniff is interested in.
@@ -116,21 +121,36 @@ class DeferredProvidersSniff implements Sniff
      */
     protected function isDeferred(int $index, array $tokens): ?bool
     {
-        if ($tokens[$index]['code'] === T_VARIABLE && $tokens[$index]['content'] === '$defer') {
-            $this->checkingForDeferredValue = true;
-        }
-
-        if ($this->checkingForDeferredValue === false) {
+        if ($tokens[$index]['code'] === T_IMPLEMENTS) {
+            $this->checkingForDeferrableProvider = true;
             return null;
         }
 
-        // The first T_TRUE or T_FALSE after '$defer' will be the value
-        if ($tokens[$index]['code'] === T_TRUE) {
-            $this->checkingForDeferredValue = false;
-            return true;
-        } else if ($tokens[$index]['code'] === T_FALSE) {
-            $this->checkingForDeferredValue = false;
-            return false;
+        if ($tokens[$index]['code'] === T_VARIABLE && $tokens[$index]['content'] === '$defer') {
+            $this->checkingForDeferredValue = true;
+            return null;
+        }
+
+        if ($this->checkingForDeferrableProvider) {
+            if ($tokens[$index]['code'] === T_OPEN_CURLY_BRACKET) {
+                $this->checkingForDeferrableProvider = false;
+                return null;
+            }
+            if ($tokens[$index]['code'] === T_STRING && $tokens[$index]['content'] === 'DeferrableProvider') {
+                $this->checkingForDeferrableProvider = false;
+                return true;
+            }
+        }
+
+        if ($this->checkingForDeferredValue) {
+            // The first T_TRUE or T_FALSE after '$defer' will be the value
+            if ($tokens[$index]['code'] === T_TRUE) {
+                $this->checkingForDeferredValue = false;
+                return true;
+            } else if ($tokens[$index]['code'] === T_FALSE) {
+                $this->checkingForDeferredValue = false;
+                return false;
+            }
         }
 
         return null;
