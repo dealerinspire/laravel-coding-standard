@@ -62,7 +62,7 @@ class DeferredProvidersSniff implements Sniff
     protected $checkingForDeferredValue = false;
 
     /**
-     * @var bool Indicates if we've encountered the DeferrableProvider interface
+     * @var bool Indicates if we've encountered the implements keyword
      */
     protected $checkingForDeferrableProvider = false;
 
