@@ -26,6 +26,10 @@ Then you can use any of the sniffs provided in this package.
 
 ## Provided Sniffs
 
+### DealerInspireLaravelCodingStandard.Models.NoGuardedAttributes
+
+Checks that no classes use the `protected $guarded` attribute. Useful for any projects that strictly enforce the use of explicitly whitelisting fillable attributes.
+
 ### DealerInspireLaravelCodingStandard.Providers.DeferredProviders
 
 Checks all deferred service providers to ensure that any bindings in the file are also included in the `provides` array.
