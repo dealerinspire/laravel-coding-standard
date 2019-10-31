@@ -1,5 +1,7 @@
 # Laravel Coding Standard
 
+[![Build Status][travis-badge]][travis-home]
+
 Dealer Inspire Laravel Coding Standard provides sniffs that help developers write better Laravel code.
 
 ## Installation
@@ -37,3 +39,6 @@ Checks all deferred service providers to ensure that any bindings in the file ar
 ## License
 
 MIT © [Dealer Inspire](https://www.dealerinspire.com/)
+
+[travis-home]:https://travis-ci.com/jpuck/laravel-coding-standard
+[travis-badge]:https://travis-ci.com/jpuck/laravel-coding-standard.svg?branch=master
