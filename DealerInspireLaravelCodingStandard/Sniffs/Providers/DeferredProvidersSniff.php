@@ -103,6 +103,7 @@ class DeferredProvidersSniff implements Sniff
             }
 
             $this->handleBind($index, $tokens);
+            $this->handleBindingsProperty($index, $tokens);
             $this->handleProvides($index, $tokens);
         }
 
@@ -154,6 +155,48 @@ class DeferredProvidersSniff implements Sniff
         }
 
         return null;
+    }
+
+    protected function handleBindingsProperty(int $index, array $tokens): void
+    {
+        if ($tokens[$index]['code'] !== T_PUBLIC) {
+            return;
+        }
+
+        $bindingsIndex = $index + 2;
+
+        if (empty($tokens[$bindingsIndex])) {
+            return;
+        }
+
+        if ($tokens[$bindingsIndex]['code'] !== T_VARIABLE) {
+            return;
+        }
+
+        if ($tokens[$bindingsIndex]['content'] !== '$bindings') {
+            return;
+        }
+
+
+        $this->extractServicesFromBindingsProperty($index, $tokens);
+    }
+
+    protected function extractServicesFromBindingsProperty(int $index, array $tokens): void
+    {
+        while ($tokens[$index]['code'] !== T_CLOSE_SHORT_ARRAY) {
+            $className = $this->getClassNameForIndex($index, $tokens);
+
+            if ($className && $this->isClassNameArrayIndex($index, $tokens)) {
+                $this->boundClasses[$index] = trim($className, "'");
+            }
+
+            $index++;
+        }
+    }
+
+    protected function isClassNameArrayIndex(int $index, array $tokens): bool
+    {
+        return T_DOUBLE_ARROW === ($tokens[$index + 4]['code'] ?? null);
     }
 
     /**
