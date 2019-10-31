@@ -40,5 +40,5 @@ Checks all deferred service providers to ensure that any bindings in the file ar
 
 MIT © [Dealer Inspire](https://www.dealerinspire.com/)
 
-[travis-home]:https://travis-ci.com/jpuck/laravel-coding-standard
-[travis-badge]:https://travis-ci.com/jpuck/laravel-coding-standard.svg?branch=master
+[travis-home]:https://travis-ci.com/dealerinspire/laravel-coding-standard
+[travis-badge]:https://travis-ci.com/dealerinspire/laravel-coding-standard.svg?branch=master
