@@ -46,37 +46,37 @@ class DeferredProvidersSniffTest extends TestCase
     public function dataProvider(): array
     {
         return [
-            'Test deferred not set defaults to false and no provides match passes' => 
+            'Test deferred not set defaults to false and no provides match passes' =>
                 [
                     'DeferredNotSetAndProvidesMissingServiceProvider.php',
                     []
                 ],
-            'Test deferred class property references and callback passes' => 
+            'Test deferred class property references and callback passes' =>
                 [
                     'DeferredWithProvidesBothClassPropertyAndCallbackDefinitionServiceProvider.php',
                     [],
                 ],
-            'Test deferred class property references and short definition passes' => 
+            'Test deferred class property references and short definition passes' =>
                 [
                     'DeferredWithProvidesBothClassPropertyAndShortDefinitionServiceProvider.php',
                     [],
                 ],
-            'Test deferred string references and callback passes' => 
+            'Test deferred string references and callback passes' =>
                 [
                     'DeferredWithProvidesBothStringAndCallbackDefinitionServiceProvider.php',
                     [],
                 ],
-            'Test deferred string references and short definition passes' => 
+            'Test deferred string references and short definition passes' =>
                 [
                     'DeferredWithProvidesBothStringAndShortDefinitionServiceProvider.php',
                     [],
                 ],
-            'Test not deferred and no provides match passes' => 
+            'Test not deferred and no provides match passes' =>
                 [
                     'NotDeferredServiceProvider.php',
                     [],
                 ],
-            'Test deferred with class property define and string provides fails' => 
+            'Test deferred with class property define and string provides fails' =>
                 [
                     'DeferredWithClassPropertyVsStringServiceProvider.php',
                     [
@@ -84,7 +84,7 @@ class DeferredProvidersSniffTest extends TestCase
                         'Found bound class not in provides "SomeOtherServiceContract::class"' => null,
                     ],
                 ],
-            'Test deferred with string define and class property provides fails' => 
+            'Test deferred with string define and class property provides fails' =>
                 [
                     'DeferredWithStringVsClassPropertyServiceProvider.php',
                     [
@@ -125,6 +125,25 @@ class DeferredProvidersSniffTest extends TestCase
                         'Found bound class not in provides "BindMethodNameSpaceContract::class"' => null,
                         'Found bound class not in provides "RefreshNameSpaceContract::class"' => null,
                         'Found bound class not in provides "RebindingNameSpaceContract::class"' => null,
+                    ],
+                ],
+            'Test deferrable bindings property passes' =>
+                [
+                    'DeferrableWithBindingsServiceProvider.php',
+                    [],
+                ],
+            'Test deferrable bindings property with missing binding fails' =>
+                [
+                    'DeferrableWithoutBindingsServiceProvider.php',
+                    [
+                        'Found unbound class in provides "SomeOtherServiceContract::class"' => null,
+                    ],
+                ],
+            'Test deferrable bindings property with extra binding fails' =>
+                [
+                    'DeferrableWithExtraBindingsServiceProvider.php',
+                    [
+                        'Found bound class not in provides "SomeOtherServiceContract::class"' => null,
                     ],
                 ],
         ];

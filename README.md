@@ -33,6 +33,7 @@ Checks that no classes use the `protected $guarded` attribute. Useful for any pr
 ### DealerInspireLaravelCodingStandard.Providers.DeferredProviders
 
 Checks all deferred service providers to ensure that any bindings in the file are also included in the `provides` array.
+Note that your service provider class must end with the conventional suffix `ServiceProvider`. e.g. `FooServiceProvider.php`
 
 ## License
 
