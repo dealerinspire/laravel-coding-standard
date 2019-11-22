@@ -1,5 +1,7 @@
 # Laravel Coding Standard
 
+[![Build Status][travis-badge]][travis-home]
+
 Dealer Inspire Laravel Coding Standard provides sniffs that help developers write better Laravel code.
 
 ## Installation
@@ -38,3 +40,6 @@ Note that your service provider class must end with the conventional suffix `Ser
 ## License
 
 MIT © [Dealer Inspire](https://www.dealerinspire.com/)
+
+[travis-home]:https://travis-ci.com/dealerinspire/laravel-coding-standard
+[travis-badge]:https://travis-ci.com/dealerinspire/laravel-coding-standard.svg?branch=master

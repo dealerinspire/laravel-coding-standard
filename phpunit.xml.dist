@@ -9,6 +9,11 @@
         beStrictAboutTodoAnnotatedTests="true"
         executionOrder="defects"
 >
+    <testsuites>
+        <testsuite name="Unit">
+            <directory suffix="Test.php">./tests</directory>
+        </testsuite>
+    </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">DealerInspireLaravelCodingStandard</directory>
