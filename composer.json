@@ -1,7 +1,6 @@
 {
   "name": "dealerinspire/laravel-coding-standard",
   "description": "DealerInspire Coding Standard for Laravel specific requirements.",
-  "version": "v1.2.0",
   "license": "MIT",
   "type": "phpcodesniffer-standard",
   "minimum-stability": "dev",
