@@ -42,4 +42,4 @@ Note that your service provider class must end with the conventional suffix `Ser
 MIT © [Dealer Inspire](https://www.dealerinspire.com/)
 
 [travis-home]:https://travis-ci.com/dealerinspire/laravel-coding-standard
-[travis-badge]:https://travis-ci.com/dealerinspire/laravel-coding-standard.svg?branch=master
+[travis-badge]:https://travis-ci.org/dealerinspire/laravel-coding-standard.svg?branch=master
