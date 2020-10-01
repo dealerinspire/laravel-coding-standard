@@ -76,6 +76,22 @@ class DeferredProvidersSniffTest extends TestCase
                     'NotDeferredServiceProvider.php',
                     [],
                 ],
+            'Test $defers fails if provider extends ServiceProvider but class name does not end with ServiceProvider' =>
+                [
+                    'DeferredWithDefersWithoutServiceProviderClassName.php',
+                    [
+                        'Found unbound class in provides "AnotherServiceContract::class"' => null,
+                        'Found bound class not in provides "SomeServiceContract::class"' => null,
+                    ]
+                ],
+            'Test DeferrableProvider fails if provider extends ServiceProvider but class name does not end with ServiceProvider' =>
+                [
+                    'DeferredWithDefersWithoutServiceProviderClassName.php',
+                    [
+                        'Found unbound class in provides "AnotherServiceContract::class"' => null,
+                        'Found bound class not in provides "SomeServiceContract::class"' => null,
+                    ]
+                ],
             'Test deferred with class property define and string provides fails' =>
                 [
                     'DeferredWithClassPropertyVsStringServiceProvider.php',

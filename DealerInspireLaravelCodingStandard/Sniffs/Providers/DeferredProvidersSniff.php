@@ -15,6 +15,7 @@ use PHP_CodeSniffer\Files\File;
  * This class assumes some things about the code it's sniffing:
  * - The provides method simply returns an array of classes that are provided (no method calls or other overly clever shenanigans)
  * - The register method and provides method refer to the class in the same way i.e. both either use string literals or ::class magic constants
+ * - All of your service providers extend a class called ServiceProvider (like in the default Laravel setup)
  * - The $defer property is set to true or the DeferrableProvider interface is implemented. It won't check in parent classes.
  *
  * @package DealerInspireLaravel\Sniffs\Providers
@@ -57,6 +58,11 @@ class DeferredProvidersSniff implements Sniff
     protected $providesOpenCurlyBrackets = 0;
 
     /**
+     * @var bool Indicates if we've encountered the extends keyword
+     */
+    protected $checkingForServiceProvider = false;
+
+    /**
      * @var bool Indicates if we've encountered the $defer variable
      */
     protected $checkingForDeferredValue = false;
@@ -86,19 +92,19 @@ class DeferredProvidersSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr): void
     {
-        if (!strpos($phpcsFile->getFilename(), 'ServiceProvider.php')) {
-            // We don't want to do anything if we aren't in a Service Provider file
-            return;
-        }
-
         $tokens = $phpcsFile->getTokens();
+        $isServiceProvider = null;
         $isDeferred = null;
         foreach ($tokens as $index => $token) {
+            if (is_null($isServiceProvider)) {
+                $isServiceProvider = $this->isServiceProvider($index, $tokens);
+            }
+
             if (is_null($isDeferred)) {
                 $isDeferred = $this->isDeferred($index, $tokens);
             }
 
-            if ($isDeferred === false) {
+            if ($isServiceProvider === false || $isDeferred === false) {
                 break;
             }
 
@@ -107,10 +113,39 @@ class DeferredProvidersSniff implements Sniff
             $this->handleProvides($index, $tokens);
         }
 
-        if ($isDeferred === true) {
+        if ($isServiceProvider && $isDeferred) {
             $this->handleErrors($phpcsFile);
         }
         $this->reset();
+    }
+
+    /**
+     * Returns true if the class is a Service Provider, false if it's not, and null if the given $index doesn't determine provider status
+     *
+     * @param int $index
+     * @param array $tokens
+     * @return bool|null
+     */
+    protected function isServiceProvider(int $index, array $tokens): ?bool
+    {
+        if ($tokens[$index]['code'] === T_EXTENDS) {
+            $this->checkingForServiceProvider = true;
+            return null;
+        }
+
+        if ($this->checkingForServiceProvider) {
+            if ($tokens[$index]['code'] === T_OPEN_CURLY_BRACKET || $tokens[$index]['code'] === T_IMPLEMENTS) {
+                $this->checkingForServiceProvider = false;
+                return false;
+            }
+
+            if ($tokens[$index]['code'] === T_STRING && $tokens[$index]['content'] === 'ServiceProvider') {
+                $this->checkingForServiceProvider = false;
+                return true;
+            }
+        }
+
+        return null;
     }
 
     /**
