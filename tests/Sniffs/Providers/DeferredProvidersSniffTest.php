@@ -16,7 +16,7 @@ class DeferredProvidersSniffTest extends TestCase
      */
     protected $codeSniffer;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->codeSniffer = new Runner();
         $this->codeSniffer->config = new Config(['-s']);
