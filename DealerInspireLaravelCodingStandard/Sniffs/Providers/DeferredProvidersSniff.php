@@ -66,8 +66,6 @@ class DeferredProvidersSniff implements Sniff
      */
     protected $checkingForDeferrableProvider = false;
 
-    protected $isDeferred = false;
-
     /**
      * Returns the token types that this sniff is interested in.
      *
@@ -329,6 +327,5 @@ class DeferredProvidersSniff implements Sniff
         $this->providesClasses = [];
         $this->providesOpenCurlyBrackets = 0;
         $this->checkingForDeferredValue = false;
-        $this->isDeferred = false;
     }
 }
