@@ -327,6 +327,5 @@ class DeferredProvidersSniff implements Sniff
         $this->providesClasses = [];
         $this->providesOpenCurlyBrackets = 0;
         $this->checkingForDeferredValue = false;
-        $this->isDeferred = false;
     }
 }
